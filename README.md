@@ -1,1 +1,1 @@
-# Re_dux.Basic
+# Starting with Redux
