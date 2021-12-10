@@ -1,0 +1,45 @@
+//npm init -y: which created package.json
+//npm install redux: which creates package-lock.json file and node_modules folder and now we are 
+//ready to use redux
+
+//importing 3rd party package
+const redux = require('redux');
+
+//Reducer function : Standard js fn called by redux library
+//It will get two parameters :old state and the action dispatched from the component
+//It returns a new state object
+//The reducer fn will produce new state snapshots
+//here below is the current state and action dispatched.
+const CounterReducer = (state={counter: 0}, action) => {
+  //since reducer function always returns a new state object
+  return {
+     counter: state.counter + 1
+  };
+}
+
+//redux object calls createStore method which creates a store
+//store needs to know that which reducer is responsible for changing that store so we pass counterReducer fn
+const store = redux.createStore(CounterReducer);
+
+console.log(store.getState());
+
+//Now we need someone who subscribe to the store
+const counterSubscriber = () => {
+    //getState method will give the latest snapshot of state after it was updated
+    const latestState = store.getState(); //store which got created in line 22
+    console.log(latestState);
+}
+
+//subscribe method: wants a subscriber method which redux will execute for us whenever the data in 
+//store changes
+store.subscribe(counterSubscriber); //not executing(ex: counterSubscriber()), just pointing to that function
+//because both reducer(line 22) and subscriber will be executed by redux
+
+//dispatch method: dispatches an action
+//action is a javascript object with type property, type should be unique (can be a string).
+store.dispatch({type: 'increment'});
+//here initially counterReducer fn gets called while store is created (output: { counter : 1 })
+//then when dispatch method gets called....again counterReducer fn gets called which updates 
+//counter value to 2
+//when action is dispatched: counterReducer gets invoked because it has action has one parameter i.e.
+//when action is dispatched, the counterReducer gets invoked automatically.
